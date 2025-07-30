@@ -7,7 +7,7 @@
     },
     {
       "src": "/admin",
-      "": "/public/admin.html"
+      "dest": "/public/admin.html"
     },
     {
       "src": "/login",
