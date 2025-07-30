@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Register Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center h-screen bg-gray-100">
+  <div class="bg-white p-6 rounded shadow-md w-80">
+    <h2 class="text-xl font-bold mb-4 text-center">Register Admin</h2>
+    <input id="username" type="text" placeholder="Username" class="w-full mb-2 px-3 py-2 border rounded">
+    <input id="password" type="password" placeholder="Password" class="w-full mb-4 px-3 py-2 border rounded">
+    <button onclick="register()" class="w-full bg-blue-600 text-white py-2 rounded">Register</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCSKBHxE8YIDFsEW-8TpGSOHuZJ5CliIkg",
+      authDomain: "fingerpinauth.firebaseapp.com",
+      databaseURL: "https://fingerpinauth-default-rtdb.firebaseio.com",
+      projectId: "fingerpinauth",
+      storageBucket: "fingerpinauth.firebasestorage.app",
+      messagingSenderId: "395896869935",
+      appId: "1:395896869935:web:f05223a2c140bd88d662da",
+      measurementId: "G-6S5NHHLFW0"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    window.register = async function () {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      if (!username || !password) return alert("Lengkapi semua kolom!");
+
+      await set(ref(db, 'admin/' + username), { password });
+      alert("Admin berhasil didaftarkan!");
+    }
+  </script>
+</body>
+</html>

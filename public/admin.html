@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard - 17 Agustus</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-4 text-center">Dashboard Pendaftaran 17 Agustus</h1>
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white shadow-md rounded border">
+        <thead>
+          <tr class="bg-blue-200 text-left">
+            <th class="py-2 px-4">No</th>
+            <th class="py-2 px-4">Nama</th>
+            <th class="py-2 px-4">Kelas</th>
+            <th class="py-2 px-4">Nomor HP</th>
+            <th class="py-2 px-4">Lomba</th>
+          </tr>
+        </thead>
+        <tbody id="data-table" class="divide-y divide-gray-200"></tbody>
+      </table>
+    </div>
+  </div>
+<footer>
+        <p class="text-sm text-center text-gray-400">&copy; 2025 Pendaftaran 17 Agustus RT 03</p>
+      <p class="text-sm text-center text-blue-800">Devlop By : <a href="https://www.instagram.com/fizzx.docx/">FizzxDevv</a></p>
+</footer>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCSKBHxE8YIDFsEW-8TpGSOHuZJ5CliIkg",
+      authDomain: "fingerpinauth.firebaseapp.com",
+      databaseURL: "https://fingerpinauth-default-rtdb.firebaseio.com",
+      projectId: "fingerpinauth",
+      storageBucket: "fingerpinauth.firebasestorage.app",
+      messagingSenderId: "395896869935",
+      appId: "1:395896869935:web:f05223a2c140bd88d662da",
+      measurementId: "G-6S5NHHLFW0"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const dataRef = ref(db, 'pendaftaran17agustus/');
+
+    const table = document.getElementById('data-table');
+
+      if (!localStorage.getItem("adminLogin")) {
+    window.location.href = "login-admin.html";
+  }
+    onValue(dataRef, (snapshot) => {
+      table.innerHTML = "";
+      let index = 1;
+      snapshot.forEach((child) => {
+        const data = child.val();
+        const row = `
+          <tr>
+            <td class="py-2 px-4">${index++}</td>
+            <td class="py-2 px-4">${data.nama || '-'}</td>
+            <td class="py-2 px-4">${data.kelas || '-'}</td>
+            <td class="py-2 px-4">${data.wa || '-'}</td>
+            <td class="py-2 px-4">${data.lomba || '-'}</td>
+          </tr>
+        `;
+        table.innerHTML += row;
+      });
+    });
+  </script>
+</body>
+</html>

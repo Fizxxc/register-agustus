@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/public/$1"
+    },
+    {
+      "src": "/admin",
+      "": "/public/admin.html"
+    },
+    {
+      "src": "/login",
+      "dest": "/public/login-admin.html"
+    }
+  ]
+}

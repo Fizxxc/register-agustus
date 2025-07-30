@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"/>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #ed1515, #ffffff);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center px-4 py-10">
+
+  <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 space-y-6 animate-fadeIn">
+    <h2 class="text-3xl font-bold text-center text-gray-800">Login Admin</h2>
+    <p class="text-center text-red-700">Silahkan Login Terlebih Dahulu!!</p>
+    <form id="loginForm" class="space-y-4">
+      <div>
+        <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+        <input id="username" type="text" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"/>
+      </div>
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+        <input id="password" type="password" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"/>
+      </div>
+      <button type="submit" class="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300">Login</button>
+      <p class="text-sm text-center text-gray-400">&copy; 2025 Pendaftaran 17 Agustus RT 03</p>
+      <p class="text-sm text-center text-blue-800">Devlop By : FizzxDevv</p>
+    </form>
+    <p id="error" class="text-sm text-red-500 text-center hidden">Username atau password salah.</p>
+  </div>
+
+
+  <script type="module">
+    import { db } from './firebase.js';
+    import { get, ref, child } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+
+    const loginForm = document.getElementById("loginForm");
+    const errorText = document.getElementById("error");
+
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const snapshot = await get(ref(db, 'admin/' + username));
+        if (snapshot.exists()) {
+          const adminData = snapshot.val();
+          if (adminData.password === password) {
+            localStorage.setItem("admin", username);
+            window.location.href = "/admin";
+          } else {
+            errorText.classList.remove("hidden");
+          }
+        } else {
+          errorText.classList.remove("hidden");
+        }
+      } catch (error) {
+        console.error("Login error:", error);
+        errorText.classList.remove("hidden");
+      }
+    });
+  </script>
+</body>
+</html>

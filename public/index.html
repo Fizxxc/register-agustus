@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pendaftaran 17 Agustus RT 03</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body {
+      background: url('logo.png') no-repeat center center/cover;
+    }
+
+    .glass {
+      background: rgb(255, 255, 255);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(242, 0, 0, 0.779);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center px-4">
+
+  <div class="glass p-8 rounded-xl shadow-2xl w-full max-w-lg text-gray-800">
+    <div class="text-center mb-6">
+      <h1 class="text-3xl font-bold text-red-600">Form Pendaftaran 17 Agustus RT 03 🇮🇩</h1>
+      <p class="text-black mt-2">Silakan isi formulir untuk mengikuti lomba</p>
+    </div>
+
+    <form id="formDaftar" class="space-y-4">
+      <div>
+        <label class="block font-medium text-black">Nama Lengkap</label>
+        <input id="nama" type="text" required
+          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500" />
+      </div>
+      <div>
+        <label class="block font-medium text-black">Kelas</label>
+        <select id="kelas" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500">
+          <option value="">-- Pilih Kategori Kelas --</option>
+          <option value="TK">TK</option>
+          <option value="SD">SD</option>
+          <option value="SMP">SMP</option>
+          <option value="SMA/SMK">SMA/SMK</option>
+          <option value="UMUM">UMUM/MAHASISWA</option>
+        </select>
+      </div>
+      <div id="subkelas-container" class="hidden">
+        <label class="block font-medium text-black">Sub Kelas</label>
+        <select id="subkelas" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500">
+          <!-- Diisi dinamis lewat JS -->
+        </select>
+      </div>
+      <div>
+        <label class="block font-medium text-black">No. WhatsApp (Nomor ortu jika anak-anak)</label>
+        <input id="wa" type="tel" required
+          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500" />
+      </div>
+      <div>
+        <label class="block font-medium text-black">Pilih Lomba</label>
+        <select id="lomba" required
+          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500">
+          <option value="">-- Pilih Lomba --</option>
+          <option>Balap Karung</option>
+          <option>Tarik Tambang</option>
+          <option>Makan Kerupuk</option>
+          <option>Lomba Anak-anak</option>
+        </select>
+      </div>
+      <button type="submit"
+        class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-lg transition-all duration-200">
+        Daftar Sekarang
+      </button>
+      <p class="text-sm text-center text-gray-400">&copy; 2025 Pendaftaran 17 Agustus RT 03</p>
+      <p class="text-sm text-center text-blue-800">Devlop By : <a href="https://www.instagram.com/fizzx.docx/">FizzxDevv</a></p>
+    </form>
+  </div>
+
+<script type="module">
+  import { db, ref, push, set } from './firebase.js';
+
+  const form = document.getElementById('formDaftar');
+  const kelasSelect = document.getElementById('kelas');
+  const subkelasContainer = document.getElementById('subkelas-container');
+  const subkelasSelect = document.getElementById('subkelas');
+  const lombaSelect = document.getElementById('lomba');
+
+  const subkelasOptions = {
+    SD: ['SD 1', 'SD 2', 'SD 3', 'SD 4', 'SD 5', 'SD 6'],
+    SMP: ['SMP 7', 'SMP 8', 'SMP 9'],
+    'SMA/SMK': ['SMA/SMK 10', 'SMA/SMK 11', 'SMA/SMK 12'],
+    UMUM: ['Mahasiswa', 'Bapak-Bapak', 'Ibu-Ibu']
+  };
+
+  const lombaByKelas = {
+    TK: ['Lomba Memindahkan Bendera', 'Lomba Klereng', 'Lomba Nyusun Bangun Datar'],
+    SD: ['Lomba Klereng (Digigit)', 'Lomba Strategi Memindahkan Gelas', 'Lomba giring Baskom dengan Botol', '*NOTE: Lomba di atas untuk kelas 1-2 SD', 'Lomba Bawa Air Di Gelas Plastik', 'Lomba Makan Kerupuk', 'Lomba Mindahin Karet', '*NOTE: Lomba di atas untuk kelas 3-4 SD', 'Lomba Masukin Sedotan Menggunakan Hidung', 'Lomba Mindahin Karet', 'Lomba nyuapin kerupuk ke temennya', '*NOTE: Lomba di atas untuk kelas 5-6 SD'],
+    SMP: ['Suit Geser', 'Jalan Pakai Balok Kayu', 'Lomba Mindahin Karet'],
+    'SMA/SMK': ['Suit Geser', 'Jalan Pakai Balok Kayu'],
+    UMUM: ['Masukin Balon Ke Gelas', 'Estapet Tepung']
+  };
+
+  function updateLomba(kelas) {
+    const daftarLomba = lombaByKelas[kelas] || [];
+    lombaSelect.innerHTML = `<option value="">-- Pilih Lomba --</option>` +
+      daftarLomba.map(l => `<option>${l}</option>`).join('');
+  }
+
+  kelasSelect.addEventListener('change', () => {
+    const selected = kelasSelect.value;
+
+    if (subkelasOptions[selected]) {
+      subkelasContainer.classList.remove('hidden');
+      subkelasSelect.innerHTML = `<option value="">-- Pilih Sub Kelas --</option>` +
+        subkelasOptions[selected].map(k => `<option>${k}</option>`).join('');
+    } else {
+      subkelasContainer.classList.add('hidden');
+      subkelasSelect.innerHTML = '';
+    }
+
+    updateLomba(selected);
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const nama = document.getElementById('nama').value.trim();
+    const kelasUtama = kelasSelect.value;
+    const subkelas = subkelasSelect.value;
+    const wa = document.getElementById('wa').value.trim();
+    const lomba = lombaSelect.value;
+
+    const kelasFinal = subkelas || kelasUtama;
+
+    if (!nama || !kelasFinal || !wa || !lomba) {
+      return Swal.fire({
+        icon: 'warning',
+        title: 'Lengkapi semua isian!',
+        toast: true,
+        position: 'top-end',
+        timer: 2500,
+        showConfirmButton: false
+      });
+    }
+
+    try {
+      const daftarRef = ref(db, 'pendaftaran17agustus');
+      const newRef = push(daftarRef);
+      await set(newRef, { nama, kelas: kelasFinal, wa, lomba });
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Berhasil mendaftar!',
+        text: 'Kami akan menghubungi kamu via WhatsApp.',
+        toast: true,
+        position: 'top-end',
+        timer: 3000,
+        showConfirmButton: false
+      });
+
+      form.reset();
+      subkelasContainer.classList.add('hidden');
+      lombaSelect.innerHTML = `<option value="">-- Pilih Lomba --</option>`;
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal menyimpan data',
+        text: err.message,
+        toast: true,
+        position: 'top-end',
+        timer: 3000,
+        showConfirmButton: false
+      });
+    }
+  });
+</script>
+</body>
+</html>
