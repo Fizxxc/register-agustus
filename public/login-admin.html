@@ -53,7 +53,7 @@
           const adminData = snapshot.val();
           if (adminData.password === password) {
             localStorage.setItem("admin", username);
-            window.location.href = "/admin";
+            window.location.href = "admin.html";
           } else {
             errorText.classList.remove("hidden");
           }
