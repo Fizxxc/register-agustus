@@ -1,36 +1,44 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-br from-purple-600 to-indigo-800 min-h-screen flex items-center justify-center">
+
+<body class="bg-gradient-to-br from-red-600 to-white-800 min-h-screen flex items-center justify-center">
   <div class="bg-white p-8 rounded-xl shadow-xl w-full max-w-md">
     <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Login Admin</h2>
     <form id="loginForm" class="space-y-4">
-      <input type="text" id="username" placeholder="Username" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-300">
-      <input type="password" id="password" placeholder="Password" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-300">
-      <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition">Login</button>
+      <input type="text" id="username" placeholder="Username" required
+        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-300">
+      <input type="password" id="password" placeholder="Password" required
+        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-300">
+      <button type="submit"
+        class="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition">Login</button>
     </form>
-    <p class="text-sm text-center text-gray-500 mt-4">© 2025 Delibo</p>
+    <p class="text-sm text-center text-gray-400">&copy; 2025 Pendaftaran 17 Agustus RT 03</p>
+    <p class="text-sm text-center text-blue-800">Devlop By : <a
+        href="https://www.instagram.com/fizzx.docx/">FizzxDevv</a></p>
+    </form>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
     import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
 
- const firebaseConfig = {
-  apiKey: "AIzaSyCSKBHxE8YIDFsEW-8TpGSOHuZJ5CliIkg",
-  authDomain: "fingerpinauth.firebaseapp.com",
-  databaseURL: "https://fingerpinauth-default-rtdb.firebaseio.com",
-  projectId: "fingerpinauth",
-  storageBucket: "fingerpinauth.appspot.com", // Diperbaiki: sebelumnya `firebasestorage.app`, seharusnya `.appspot.com`
-  messagingSenderId: "395896869935",
-  appId: "1:395896869935:web:f05223a2c140bd88d662da",
-  measurementId: "G-6S5NHHLFW0"
-};
+    const firebaseConfig = {
+      apiKey: "AIzaSyCSKBHxE8YIDFsEW-8TpGSOHuZJ5CliIkg",
+      authDomain: "fingerpinauth.firebaseapp.com",
+      databaseURL: "https://fingerpinauth-default-rtdb.firebaseio.com",
+      projectId: "fingerpinauth",
+      storageBucket: "fingerpinauth.appspot.com", // Diperbaiki: sebelumnya `firebasestorage.app`, seharusnya `.appspot.com`
+      messagingSenderId: "395896869935",
+      appId: "1:395896869935:web:f05223a2c140bd88d662da",
+      measurementId: "G-6S5NHHLFW0"
+    };
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
